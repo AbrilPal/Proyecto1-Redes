@@ -12,9 +12,9 @@ from Cliente import Cliente
 
 print("********************* Bienvenido *********************")
 print()
-print("1. Ingresar")
-print("2. Registrarse")
-print("3. salir")
+print("1. Ingresar") # done
+print("2. Registrarse") # done
+print("3. salir") # done
 print()
 opcion = int(input("Que opcion quieres? "))
 

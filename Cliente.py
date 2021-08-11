@@ -30,10 +30,12 @@ class Cliente(xmpp.ClientXMPP):
 
         def cerra_sesion():
             self.disconnect()
+            print("********* Cerro sesion exitosamente *********")
 
         def contacto_nuevo():
             usuario = input("Usuario: ")
             self.send_presence_subscription(pto=usuario)
+            print("********* Agrego contacto exitosamente *********")
             
         # menu
         menu = True
@@ -47,13 +49,14 @@ class Cliente(xmpp.ClientXMPP):
             print("6. Definir mensaje de presencia")
             print("7. Enviar/recibir notificaciones")
             print("8. Enviar/recibir archivos")
-            print("9. Cerrar sesion")
+            print("9. Eliminar la cuenta del servidor")
+            print("10. Cerrar sesion") # done
             print("")
             op_menu = int(input("Que opcion quieres? "))
 
             if op_menu == 1:
                 mensaje_privado()
-            elif op_menu == 9:
+            elif op_menu == 10:
                 cerra_sesion()
                 menu = False
             elif op_menu == 3:
@@ -76,9 +79,6 @@ class Cliente(xmpp.ClientXMPP):
         except IqError as e:
             logging.error("Could not register account: %s" %
                     e.iq['error']['text'])
-            self.disconnect()
-        except IqTimeout:
-            logging.error("No response from server.")
             self.disconnect()
 
     def ingresar():
@@ -129,5 +129,5 @@ class Cliente(xmpp.ClientXMPP):
 
         # Connect to the XMPP server and start processing XMPP stanzas.
         xmpp.connect()
-        xmpp.process()
+        xmpp.process(forever=False)
         
