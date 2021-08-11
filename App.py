@@ -16,4 +16,15 @@ print("1. Ingresar")
 print("2. Registrarse")
 print("3. salir")
 print()
-opcion = input("Que opcion quieres? ")
+opcion = int(input("Que opcion quieres? "))
+
+if opcion == 1:
+    print()
+    print("******* Ingresar a la plataforma *******")
+    print()
+elif opcion == 2:
+    print()
+    print("******* Registrarse a la plataforma *******")
+    print()
+elif opcion == 3:
+    exit()
