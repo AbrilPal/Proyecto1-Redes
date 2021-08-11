@@ -10,21 +10,25 @@ from argparse import ArgumentParser
 import slixmpp as xmpp
 
 class Cliente(xmpp.ClientXMPP):
-    def __init__(self, jid, password, recipient, message):
+    def __init__(self, jid, password):
         xmpp.ClientXMPP.__init__(self, jid, password)
-        self.recipient = recipient
-        self.msg = message
+        self.jid = jid
+        self.password = password
         self.add_event_handler("session_start", self.start)
+        
 
     async def start(self, event):
         self.send_presence()
+
+        def mensaje_privado():
+            to = input("Para: ")
+            msg = input("Mensaje: ")
+            self.send_message(mto= to, mbody= msg, mtype='chat')
+            print("********* Mensaje enviado exitosamente *********")
+            self.disconnect()
+
+        mensaje_privado()
         await self.get_roster()
-
-        self.send_message(mto=self.recipient,
-                          mbody=self.msg,
-                          mtype='chat')
-
-        self.disconnect()
 
     def ingresar():
         # Setup the command line arguments.
@@ -38,32 +42,10 @@ class Cliente(xmpp.ClientXMPP):
                             action="store_const", dest="loglevel",
                             const=logging.DEBUG, default=logging.INFO)
 
-        # JID and password options.
-        parser.add_argument("-j", "--jid", dest="jid",
-                            help="JID to use")
-        parser.add_argument("-p", "--password", dest="password",
-                            help="password to use")
-        parser.add_argument("-t", "--to", dest="to",
-                            help="JID to send the message to")
-        parser.add_argument("-m", "--message", dest="message",
-                            help="message to send")
+        usuario = input("Usuario: ")
+        password = getpass("Contraseña: ")
 
-        args = parser.parse_args()
-
-        # Setup logging.
-        logging.basicConfig(level=args.loglevel,
-                            format='%(levelname)-8s %(message)s')
-
-        if args.jid is None:
-            args.jid = input("Username: ")
-        if args.password is None:
-            args.password = getpass("Password: ")
-        if args.to is None:
-            args.to = input("Send To: ")
-        if args.message is None:
-            args.message = input("Message: ")
-
-        xmpp = Cliente(args.jid, args.password, args.to, args.message)
+        xmpp = Cliente(usuario, password)
         xmpp.register_plugin('xep_0030') 
         xmpp.register_plugin('xep_0199') 
 
