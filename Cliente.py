@@ -27,6 +27,10 @@ class Cliente(xmpp.ClientXMPP):
             msg = input("Mensaje: ")
             self.send_message(mto= to, mbody= msg, mtype='chat')
             print("********* Mensaje enviado exitosamente *********")
+
+        def cerra_sesion():
+            self.disconnect()
+            
             
         # menu
         menu = True
@@ -40,11 +44,15 @@ class Cliente(xmpp.ClientXMPP):
             print("6. Definir mensaje de presencia")
             print("7. Enviar/recibir notificaciones")
             print("8. Enviar/recibir archivos")
+            print("9. Cerrar sesion")
             print("")
             op_menu = int(input("Que opcion quieres? "))
 
             if op_menu == 1:
                 mensaje_privado()
+            elif op_menu == 9:
+                cerra_sesion()
+                menu = False
                 
             await self.get_roster()
 
