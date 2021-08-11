@@ -22,6 +22,7 @@ if opcion == 1:
     print()
     print("******* Ingresar a la plataforma *******")
     print()
+    Cliente.ingresar()
 elif opcion == 2:
     print()
     print("******* Registrarse a la plataforma *******")
