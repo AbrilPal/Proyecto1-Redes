@@ -17,18 +17,6 @@ class Cliente(xmpp.ClientXMPP):
         self.add_event_handler("session_start", self.start)
 
     async def start(self, event):
-        """
-        Process the session_start event.
-
-        Typical actions for the session_start event are
-        requesting the roster and broadcasting an initial
-        presence stanza.
-
-        Arguments:
-            event -- An empty dictionary. The session_start
-                     event does not provide any additional
-                     data.
-        """
         self.send_presence()
         await self.get_roster()
 
@@ -76,12 +64,9 @@ if __name__ == '__main__':
     if args.message is None:
         args.message = input("Message: ")
 
-    # Setup the EchoBot and register plugins. Note that while plugins may
-    # have interdependencies, the order in which you register them does
-    # not matter.
     xmpp = Cliente(args.jid, args.password, args.to, args.message)
-    xmpp.register_plugin('xep_0030') # Service Discovery
-    xmpp.register_plugin('xep_0199') # XMPP Ping
+    xmpp.register_plugin('xep_0030') 
+    xmpp.register_plugin('xep_0199') 
 
     # Connect to the XMPP server and start processing XMPP stanzas.
     xmpp.connect()
