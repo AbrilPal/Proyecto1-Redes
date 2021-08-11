@@ -30,14 +30,18 @@ class Cliente(xmpp.ClientXMPP):
 
         def cerra_sesion():
             self.disconnect()
+
+        def contacto_nuevo():
+            usuario = input("Usuario: ")
+            self.send_presence_subscription(pto=usuario)
             
         # menu
         menu = True
         while menu:
             print()
-            print("1. Enviar mensajes directos")
+            print("1. Enviar mensajes directos") # done
             print("2. Mostrar todos los usuarios/contactos y su estado")
-            print("3. Agregar un usuario a los contactos")
+            print("3. Agregar un usuario a los contactos") # done
             print("4. Mostrar detalles de contacto de un usuario")
             print("5. articipar en conversaciones grupales")
             print("6. Definir mensaje de presencia")
@@ -52,16 +56,18 @@ class Cliente(xmpp.ClientXMPP):
             elif op_menu == 9:
                 cerra_sesion()
                 menu = False
+            elif op_menu == 3:
+                contacto_nuevo()
                 
             await self.get_roster()
 
-    async def registration(self, event):
+    async def registration(self, iq):
         self.send_presence()
         self.get_roster()
 
         resp = self.Iq()
         resp['type'] = 'set'
-        resp['register']['jid'] = self.jid
+        resp['register']['username'] = self.boundjid.user
         resp['register']['password'] = self.password
 
         try:
@@ -70,6 +76,9 @@ class Cliente(xmpp.ClientXMPP):
         except IqError as e:
             logging.error("Could not register account: %s" %
                     e.iq['error']['text'])
+            self.disconnect()
+        except IqTimeout:
+            logging.error("No response from server.")
             self.disconnect()
 
     def ingresar():
@@ -120,5 +129,5 @@ class Cliente(xmpp.ClientXMPP):
 
         # Connect to the XMPP server and start processing XMPP stanzas.
         xmpp.connect()
-        xmpp.process(forever=False)
+        xmpp.process()
         
