@@ -27,5 +27,6 @@ elif opcion == 2:
     print()
     print("******* Registrarse a la plataforma *******")
     print()
+    Cliente.registo()
 elif opcion == 3:
     exit()

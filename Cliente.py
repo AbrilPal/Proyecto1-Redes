@@ -17,7 +17,7 @@ class Cliente(xmpp.ClientXMPP):
         self.jid = jid
         self.password = password
         self.add_event_handler("session_start", self.start)
-        
+        self.add_event_handler("register", self.registration)
 
     async def start(self, event):
         self.send_presence()
@@ -30,7 +30,6 @@ class Cliente(xmpp.ClientXMPP):
 
         def cerra_sesion():
             self.disconnect()
-            
             
         # menu
         menu = True
@@ -56,6 +55,23 @@ class Cliente(xmpp.ClientXMPP):
                 
             await self.get_roster()
 
+    async def registration(self, event):
+        self.send_presence()
+        self.get_roster()
+
+        resp = self.Iq()
+        resp['type'] = 'set'
+        resp['register']['jid'] = self.jid
+        resp['register']['password'] = self.password
+
+        try:
+            await resp.send()
+            logging.info("Account created for %s!" % self.boundjid)
+        except IqError as e:
+            logging.error("Could not register account: %s" %
+                    e.iq['error']['text'])
+            self.disconnect()
+
     def ingresar():
         # Setup the command line arguments.
         parser = ArgumentParser(description=Cliente.__doc__)
@@ -78,3 +94,31 @@ class Cliente(xmpp.ClientXMPP):
         # Connect to the XMPP server and start processing XMPP stanzas.
         xmpp.connect()
         xmpp.process(forever=False)
+
+    def registo():
+        # Setup the command line arguments.
+        parser = ArgumentParser(description=Cliente.__doc__)
+
+        # Output verbosity options.
+        parser.add_argument("-q", "--quiet", help="set logging to ERROR",
+                            action="store_const", dest="loglevel",
+                            const=logging.ERROR, default=logging.INFO)
+        parser.add_argument("-d", "--debug", help="set logging to DEBUG",
+                            action="store_const", dest="loglevel",
+                            const=logging.DEBUG, default=logging.INFO)
+
+        usuario = input("Usuario: ")
+        password = getpass("Contraseña: ")
+
+        xmpp = Cliente(usuario, password)
+        xmpp.register_plugin('xep_0030') 
+        xmpp.register_plugin('xep_0004')
+        xmpp.register_plugin('xep_0077')
+        xmpp.register_plugin('xep_0199')
+        xmpp.register_plugin('xep_0066')
+        xmpp["xep_0077"].force_registration = True
+
+        # Connect to the XMPP server and start processing XMPP stanzas.
+        xmpp.connect()
+        xmpp.process(forever=False)
+        
