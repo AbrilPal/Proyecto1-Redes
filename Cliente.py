@@ -36,6 +36,23 @@ class Cliente(xmpp.ClientXMPP):
             usuario = input("Usuario: ")
             self.send_presence_subscription(pto=usuario)
             print("********* Agrego contacto exitosamente *********")
+
+        def eliminar_cuenta():
+            self.register_plugin('xep_0030') 
+            self.register_plugin('xep_0004')
+            self.register_plugin('xep_0077')
+            self.register_plugin('xep_0199')
+            self.register_plugin('xep_0066')
+
+            # delete logged account
+            eliminar = self.Iq()
+            eliminar['type'] = 'set'
+            eliminar['from'] = self.boundjid.user
+            eliminar['register']['remove'] = True
+            eliminar.send()
+            
+            self.disconnect()
+            print("********* Elimino la cuenta exitosamente *********")
             
         # menu
         menu = True
@@ -49,7 +66,7 @@ class Cliente(xmpp.ClientXMPP):
             print("6. Definir mensaje de presencia")
             print("7. Enviar/recibir notificaciones")
             print("8. Enviar/recibir archivos")
-            print("9. Eliminar la cuenta del servidor")
+            print("9. Eliminar la cuenta del servidor") # done
             print("10. Cerrar sesion") # done
             print("")
             op_menu = int(input("Que opcion quieres? "))
@@ -61,6 +78,8 @@ class Cliente(xmpp.ClientXMPP):
                 menu = False
             elif op_menu == 3:
                 contacto_nuevo()
+            elif op_menu == 9:
+                eliminar_cuenta()
                 
             await self.get_roster()
 
