@@ -9,6 +9,8 @@ from getpass import getpass
 from argparse import ArgumentParser
 import slixmpp as xmpp
 
+logging.basicConfig(level=logging.DEBUG, format="%(levelname)-8s %(message)s")
+
 class Cliente(xmpp.ClientXMPP):
     def __init__(self, jid, password):
         xmpp.ClientXMPP.__init__(self, jid, password)
@@ -25,10 +27,26 @@ class Cliente(xmpp.ClientXMPP):
             msg = input("Mensaje: ")
             self.send_message(mto= to, mbody= msg, mtype='chat')
             print("********* Mensaje enviado exitosamente *********")
-            self.disconnect()
+            
+        # menu
+        menu = True
+        while menu:
+            print()
+            print("1. Enviar mensajes directos")
+            print("2. Mostrar todos los usuarios/contactos y su estado")
+            print("3. Agregar un usuario a los contactos")
+            print("4. Mostrar detalles de contacto de un usuario")
+            print("5. articipar en conversaciones grupales")
+            print("6. Definir mensaje de presencia")
+            print("7. Enviar/recibir notificaciones")
+            print("8. Enviar/recibir archivos")
+            print("")
+            op_menu = int(input("Que opcion quieres? "))
 
-        mensaje_privado()
-        await self.get_roster()
+            if op_menu == 1:
+                mensaje_privado()
+                
+            await self.get_roster()
 
     def ingresar():
         # Setup the command line arguments.
