@@ -9,11 +9,11 @@ from argparse import ArgumentParser
 import slixmpp as xmpp
 
 class Cliente(xmpp.ClientXMPP):
-    def __init__(self, jid, password):
+    def __init__(self, jid, password, recipient, message):
         xmpp.ClientXMPP.__init__(self, jid, password)
         self.recipient = recipient
         self.msg = message
-        elf.add_event_handler("session_start", self.start)
+        self.add_event_handler("session_start", self.start)
 
     async def start(self, event):
         """
@@ -40,7 +40,7 @@ class Cliente(xmpp.ClientXMPP):
 
 if __name__ == '__main__':
     # Setup the command line arguments.
-    parser = ArgumentParser(description=SendMsgBot.__doc__)
+    parser = ArgumentParser(description=Cliente.__doc__)
 
     # Output verbosity options.
     parser.add_argument("-q", "--quiet", help="set logging to ERROR",
@@ -78,7 +78,7 @@ if __name__ == '__main__':
     # Setup the EchoBot and register plugins. Note that while plugins may
     # have interdependencies, the order in which you register them does
     # not matter.
-    xmpp = SendMsgBot(args.jid, args.password, args.to, args.message)
+    xmpp = Cliente(args.jid, args.password, args.to, args.message)
     xmpp.register_plugin('xep_0030') # Service Discovery
     xmpp.register_plugin('xep_0199') # XMPP Ping
 
