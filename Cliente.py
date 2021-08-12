@@ -9,7 +9,7 @@ from getpass import getpass
 from argparse import ArgumentParser
 import slixmpp as xmpp
 
-logging.basicConfig(level=logging.DEBUG, format="%(levelname)-8s %(message)s")
+# logging.basicConfig(level=logging.DEBUG, format="%(levelname)-8s %(message)s")
 
 class Cliente(xmpp.ClientXMPP):
     def __init__(self, jid, password):
