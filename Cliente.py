@@ -61,9 +61,8 @@ class Cliente(xmpp.ClientXMPP):
             for contacto in contactos:
                 for jid in contactos[contacto]:
                     usuario = self.client_roster[jid]['name']
-                    if self.client_roster[jid]['name']:
-                        print ()
-                        print("Usuario: ", usuario)
+                    if usuario:
+                        pass
                     else:
                         print('Usuario: ', jid)
 
