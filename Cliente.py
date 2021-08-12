@@ -53,6 +53,30 @@ class Cliente(xmpp.ClientXMPP):
             
             self.disconnect()
             print("********* Elimino la cuenta exitosamente *********")
+
+        def mostrar_contactos():
+            print('********* Lista de Contactos *********')
+            contactos = self.client_roster.groups()
+            for contacto in contactos:
+                for jid in contactos[contacto]:
+                    usuario = self.client_roster[jid]['name']
+                    if self.client_roster[jid]['name']:
+                        print ()
+                        print("Usuario: ", usuario)
+                    else:
+                        print('Usuario: ', jid)
+
+                    # contact status
+                    conectados = self.client_roster.presence(jid)
+                    for res, pres in conectados.items():
+                        show = 'conectado'
+                        if pres['show']:
+                            show = pres['show']
+                        print("     INFO:")
+                        print('        ', show)
+                        if pres['status']:
+                            print('     Estado: ', pres['status'])
+            print()
             
         # menu
         menu = True
@@ -62,7 +86,7 @@ class Cliente(xmpp.ClientXMPP):
             print("2. Mostrar todos los usuarios/contactos y su estado")
             print("3. Agregar un usuario a los contactos") # done
             print("4. Mostrar detalles de contacto de un usuario")
-            print("5. articipar en conversaciones grupales")
+            print("5. participar en conversaciones grupales")
             print("6. Definir mensaje de presencia")
             print("7. Enviar/recibir notificaciones")
             print("8. Enviar/recibir archivos")
@@ -80,6 +104,8 @@ class Cliente(xmpp.ClientXMPP):
                 contacto_nuevo()
             elif op_menu == 9:
                 eliminar_cuenta()
+            elif op_menu == 4:
+                mostrar_contactos()
                 
             await self.get_roster()
 
