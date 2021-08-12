@@ -56,6 +56,7 @@ class Cliente(xmpp.ClientXMPP):
 
         def mostrar_contactos():
             print('********* Lista de Contactos *********')
+            print()
             contactos = self.client_roster.groups()
             for contacto in contactos:
                 for jid in contactos[contacto]:
