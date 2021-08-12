@@ -18,6 +18,7 @@ class Cliente(xmpp.ClientXMPP):
         self.password = password
         self.add_event_handler("session_start", self.start)
         self.add_event_handler("register", self.registration)
+        self.add_event_handler("message", self.mensajes)
 
     async def start(self, event):
         self.send_presence()
@@ -131,6 +132,16 @@ class Cliente(xmpp.ClientXMPP):
                 detalle_cuenta()
                 
             await self.get_roster()
+
+    async def mensajes(self, mensaje):
+        logging.info(mensaje)
+        print()
+        print("            CHAT           ")
+        usuario = str(mensaje["from"]).split("/")
+        usuario_mostar = usuario[0]
+        mensaje = mensaje["body"]
+        print(usuario_mostar , ": ", mensaje)
+        print()
 
     async def registration(self, iq):
         self.send_presence()
