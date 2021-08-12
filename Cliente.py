@@ -130,7 +130,22 @@ class Cliente(xmpp.ClientXMPP):
                 cambiar_estado()
             elif op_menu == 4:
                 detalle_cuenta()
-                
+            elif op_menu == 5:
+                print()
+                print("Lo siento, esta opcion no esta disponible en esta version!")
+                print()
+                pass
+            elif op_menu == 7:
+                print()
+                print("Lo siento, esta opcion no esta disponible en esta version!")
+                print()
+                pass
+            elif op_menu == 8:
+                print()
+                print("Lo siento, esta opcion no esta disponible en esta version!")
+                print()
+                pass
+
             await self.get_roster()
 
     async def mensajes(self, mensaje):
