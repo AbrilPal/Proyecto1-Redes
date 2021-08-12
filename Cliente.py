@@ -60,13 +60,14 @@ class Cliente(xmpp.ClientXMPP):
             contactos = self.client_roster.groups()
             for contacto in contactos:
                 for jid in contactos[contacto]:
+                    # contacts
                     usuario = self.client_roster[jid]['name']
                     if usuario:
                         pass
                     else:
                         print('Usuario: ', jid)
 
-                    # contact status
+                    # contact status and info
                     conectados = self.client_roster.presence(jid)
                     for res, pres in conectados.items():
                         show = 'conectado'
@@ -82,6 +83,7 @@ class Cliente(xmpp.ClientXMPP):
             estado = input("Coloca el estado que desees: ")
             info = input("Que info deseas mostar: (ej. chat, conectado, etc): ")
             self.send_presence(pshow=info, pstatus=estado)
+            print("********* Se guardo exitosamente *********")
             
         # menu
         menu = True
@@ -92,7 +94,7 @@ class Cliente(xmpp.ClientXMPP):
             print("3. Agregar un usuario a los contactos") # done
             print("4. Mostrar detalles de contacto de un usuario") # done
             print("5. participar en conversaciones grupales")
-            print("6. Definir mensaje de presencia")
+            print("6. Definir mensaje de presencia") # done
             print("7. Enviar/recibir notificaciones")
             print("8. Enviar/recibir archivos")
             print("9. Eliminar la cuenta del servidor") # done
