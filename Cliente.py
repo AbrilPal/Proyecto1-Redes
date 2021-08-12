@@ -77,6 +77,11 @@ class Cliente(xmpp.ClientXMPP):
                         if pres['status']:
                             print('     Estado: ', pres['status'])
             print()
+        
+        def cambiar_estado():
+            estado = input("Coloca el estado que desees: ")
+            info = input("Que info deseas mostar: (ej. chat, conectado, etc): ")
+            self.send_presence(pshow=info, pstatus=estado)
             
         # menu
         menu = True
@@ -85,7 +90,7 @@ class Cliente(xmpp.ClientXMPP):
             print("1. Enviar mensajes directos") # done
             print("2. Mostrar todos los usuarios/contactos y su estado")
             print("3. Agregar un usuario a los contactos") # done
-            print("4. Mostrar detalles de contacto de un usuario")
+            print("4. Mostrar detalles de contacto de un usuario") # done
             print("5. participar en conversaciones grupales")
             print("6. Definir mensaje de presencia")
             print("7. Enviar/recibir notificaciones")
@@ -106,6 +111,8 @@ class Cliente(xmpp.ClientXMPP):
                 eliminar_cuenta()
             elif op_menu == 4:
                 mostrar_contactos()
+            elif op_menu == 6:
+                cambiar_estado()
                 
             await self.get_roster()
 
